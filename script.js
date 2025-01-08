@@ -23,11 +23,18 @@ function displayLibrary() {
 
     bookCard.innerHTML = `
       <h3>${book.title}</h3>
-      <p>Auteur: ${book.author}</p>
+      <p>Author: ${book.author}</p>
       <p>Pages: ${book.page}</p>
-      <p>${book.read ? "Read" : "Not read"}</p>
-      <button onclick="removeBook(${index})">Supprimer</button>
-      <button onclick="toggleReadStatus(${index})">Toggle Read</button>
+      <div class="read-status">
+        <label for="read-checkbox-${index}">Read:</label>
+        <input 
+          type="checkbox" 
+          id="read-checkbox-${index}" 
+          ${book.read ? "checked" : ""} 
+          onchange="toggleReadStatus(${index})"
+        >
+      </div>
+      <button class="delete-btn" onclick="removeBook(${index})">Delete</button>
     `;
     container.appendChild(bookCard);
   });
@@ -71,4 +78,16 @@ bookForm.addEventListener("submit", (event) => {
 
 addBookToLibrary("Harry Potter", "J.K. Rowling", 400, true);
 addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, false);
-displayLibrary();
+addBookToLibrary("1984", "George Orwell", 328, true);
+addBookToLibrary("Pride and Prejudice", "Jane Austen", 279, false);
+addBookToLibrary("To Kill a Mockingbird", "Harper Lee", 281, true);
+addBookToLibrary("Le Petit Prince", "Antoine de Saint-Exupéry", 96, true);
+addBookToLibrary("Les Misérables", "Victor Hugo", 1232, false);
+addBookToLibrary("L'Étranger", "Albert Camus", 123, true);
+addBookToLibrary("Madame Bovary", "Gustave Flaubert", 378, false);
+addBookToLibrary("La Peste", "Albert Camus", 308, true);
+addBookToLibrary("Moby Dick", "Herman Melville", 635, false);
+addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", 180, true);
+addBookToLibrary("War and Peace", "Leo Tolstoy", 1225, false);
+addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 277, true);
+addBookToLibrary("Don Quixote", "Miguel de Cervantes", 982, false);
