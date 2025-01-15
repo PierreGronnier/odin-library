@@ -1,54 +1,64 @@
-const myLibrary = [];
-
-function Book(title, author, page, read) {
-  this.title = title;
-  this.author = author;
-  this.page = page;
-  this.read = read;
+class Book {
+  constructor(title, author, pages, read) {
+    this.title = title;
+    this.author = author;
+    this.pages = pages;
+    this.read = read;
+  }
 }
 
-function addBookToLibrary(title, author, page, read) {
-  const newBook = new Book(title, author, page, read);
-  myLibrary.push(newBook);
-  displayLibrary();
-}
+class Library {
+  constructor() {
+    this.books = [];
+  }
 
-function displayLibrary() {
-  const container = document.getElementById("library-container");
-  container.innerHTML = "";
+  addBook(book) {
+    this.books.push(book);
+    this.displayLibrary();
+  }
 
-  myLibrary.forEach((book, index) => {
-    const bookCard = document.createElement("div");
-    bookCard.classList.add("book-card");
+  displayLibrary() {
+    const container = document.getElementById("library-container");
+    container.innerHTML = "";
 
-    bookCard.innerHTML = `
+    this.books.forEach((book, index) => {
+      const bookCard = document.createElement("div");
+      bookCard.classList.add("book-card");
+      bookCard.innerHTML = this.getBookCardHTML(book, index);
+      container.appendChild(bookCard);
+    });
+  }
+
+  getBookCardHTML(book, index) {
+    return `
       <h3>${book.title}</h3>
       <p>Author: ${book.author}</p>
-      <p>Pages: ${book.page}</p>
+      <p>Pages: ${book.pages}</p>
       <div class="read-status">
         <label for="read-checkbox-${index}">Read:</label>
         <input 
           type="checkbox" 
           id="read-checkbox-${index}" 
           ${book.read ? "checked" : ""} 
-          onchange="toggleReadStatus(${index})"
+          onchange="library.toggleReadStatus(${index})"
         >
       </div>
-      <button class="delete-btn" onclick="removeBook(${index})">Delete</button>
+      <button class="delete-btn" onclick="library.removeBook(${index})">Delete</button>
     `;
-    container.appendChild(bookCard);
-  });
+  }
+
+  removeBook(index) {
+    this.books.splice(index, 1);
+    this.displayLibrary();
+  }
+
+  toggleReadStatus(index) {
+    this.books[index].read = !this.books[index].read;
+    this.displayLibrary();
+  }
 }
 
-function removeBook(index) {
-  myLibrary.splice(index, 1);
-  displayLibrary();
-}
-
-function toggleReadStatus(index) {
-  myLibrary[index].read = !myLibrary[index].read;
-  displayLibrary();
-}
+const library = new Library();
 
 const modal = document.getElementById("book-modal");
 const addBookBtn = document.getElementById("add-book-btn");
@@ -71,23 +81,25 @@ bookForm.addEventListener("submit", (event) => {
   const pages = document.getElementById("pages").value;
   const read = document.getElementById("read").checked;
 
-  addBookToLibrary(title, author, pages, read);
+  const newBook = new Book(title, author, pages, read);
+  library.addBook(newBook);
+
   modal.close();
   bookForm.reset();
 });
 
-addBookToLibrary("Harry Potter", "J.K. Rowling", 400, true);
-addBookToLibrary("The Hobbit", "J.R.R. Tolkien", 310, false);
-addBookToLibrary("1984", "George Orwell", 328, true);
-addBookToLibrary("Pride and Prejudice", "Jane Austen", 279, false);
-addBookToLibrary("To Kill a Mockingbird", "Harper Lee", 281, true);
-addBookToLibrary("Le Petit Prince", "Antoine de Saint-Exupéry", 96, true);
-addBookToLibrary("Les Misérables", "Victor Hugo", 1232, false);
-addBookToLibrary("L'Étranger", "Albert Camus", 123, true);
-addBookToLibrary("Madame Bovary", "Gustave Flaubert", 378, false);
-addBookToLibrary("La Peste", "Albert Camus", 308, true);
-addBookToLibrary("Moby Dick", "Herman Melville", 635, false);
-addBookToLibrary("The Great Gatsby", "F. Scott Fitzgerald", 180, true);
-addBookToLibrary("War and Peace", "Leo Tolstoy", 1225, false);
-addBookToLibrary("The Catcher in the Rye", "J.D. Salinger", 277, true);
-addBookToLibrary("Don Quixote", "Miguel de Cervantes", 982, false);
+library.addBook(new Book("Harry Potter", "J.K. Rowling", 400, true));
+library.addBook(new Book("The Hobbit", "J.R.R. Tolkien", 310, false));
+library.addBook(new Book("1984", "George Orwell", 328, true));
+library.addBook(new Book("Pride and Prejudice", "Jane Austen", 279, false));
+library.addBook(new Book("To Kill a Mockingbird", "Harper Lee", 281, true));
+library.addBook(new Book("Le Petit Prince", "Antoine de Saint-Exupéry", 96, true));
+library.addBook(new Book("Les Misérables", "Victor Hugo", 1232, false));
+library.addBook(new Book("L'Étranger", "Albert Camus", 123, true));
+library.addBook(new Book("Madame Bovary", "Gustave Flaubert", 378, false));
+library.addBook(new Book("La Peste", "Albert Camus", 308, true));
+library.addBook(new Book("Moby Dick", "Herman Melville", 635, false));
+library.addBook(new Book("The Great Gatsby", "F. Scott Fitzgerald", 180, true));
+library.addBook(new Book("War and Peace", "Leo Tolstoy", 1225, false));
+library.addBook(new Book("The Catcher in the Rye", "J.D. Salinger", 277, true));
+library.addBook(new Book("Don Quixote", "Miguel de Cervantes", 982, false));
